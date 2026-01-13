@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dados;
 using Atributos;
 using Excecoes;
@@ -18,9 +17,25 @@ namespace regras
         /**
          * @brief Construtor com repositório de imóveis.
          */
-        public GestaoDespesa(RepositorioImovel dadosImoveis)
+        public GestaoDespesa(RepositorioImovel repositorio)
         {
-            this.dadosImoveis = dadosImoveis;
+            dadosImoveis = repositorio;
+        }
+
+        /**
+        * @brief Procura uma despesa pelo Id dentro da lista do imóvel.
+        */
+        public static Despesa ObterDespesaPorId(Imovel imovel, int idDespesa)
+        {
+            foreach (Despesa d in imovel.Despesas)
+            {
+                if (d.Id == idDespesa)
+                {
+                    return d;
+                }
+            }
+
+            return null;
         }
 
         /**
@@ -67,7 +82,7 @@ namespace regras
                 imovel.Despesas = new List<Despesa>();
             }
 
-            var despesa = imovel.Despesas.FirstOrDefault(d => d.Id == idDespesa);
+            var despesa = ObterDespesaPorId(imovel, idDespesa);
             if (despesa == null)
             {
                 throw new DespesaNaoEncontrada(idDespesa);
@@ -100,7 +115,7 @@ namespace regras
                 imovel.Despesas = new List<Despesa>();
             }
 
-            var despesa = imovel.Despesas.FirstOrDefault(d => d.Id == idDespesa);
+            var despesa = ObterDespesaPorId(imovel, idDespesa);
             if (despesa == null)
             {
                 throw new DespesaNaoEncontrada(idDespesa);
@@ -108,31 +123,6 @@ namespace regras
 
             imovel.Despesas.Remove(despesa);
             return true;
-        }
-
-        /**
-         * @brief Obtém uma despesa pelo Id (dentro do imóvel).
-         */
-        public Despesa ObterPorId(int idImovel, int idDespesa)
-        {
-            var imovel = dadosImoveis.ObterPorId(idImovel);
-            if (imovel == null)
-            {
-                throw new ImovelNaoEncontrado(idImovel);
-            }
-
-            if (imovel.Despesas == null)
-            {
-                imovel.Despesas = new List<Despesa>();
-            }
-
-            var despesa = imovel.Despesas.FirstOrDefault(d => d.Id == idDespesa);
-            if (despesa == null)
-            {
-                throw new DespesaNaoEncontrada(idDespesa);
-            }
-
-            return despesa;
         }
 
         /**

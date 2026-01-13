@@ -17,9 +17,9 @@ namespace regras
         /**
          * @brief Construtor com repositório de senhorios.
          */
-        public GestaoSenhorio(RepositorioSenhorio dadosSenhorios)
+        public GestaoSenhorio(RepositorioSenhorio repositorio)
         {
-            this.dadosSenhorios = dadosSenhorios;
+            dadosSenhorios = repositorio;
         }
 
         /**
@@ -48,8 +48,8 @@ namespace regras
          */
         public bool Alterar(int id, int nif, string nome, int contacto, Localidade localidade, int numeroImoveis)
         {
-            var senhorio = dadosSenhorios.ObterPorId(id);
-            if (senhorio == null)
+            var existente = dadosSenhorios.ObterPorId(id);
+            if (existente == null)
             {
                 throw new SenhorioNaoEncontrado(id);
             }
@@ -64,12 +64,9 @@ namespace regras
                 throw new OperacaoInvalida("Número de imóveis não pode ser negativo.");
             }
 
-            senhorio.Nome = nome;
-            senhorio.Nif = nif;
-            senhorio.Contacto = contacto;
-            senhorio.Localidade = localidade;
-            senhorio.NumeroImoveis = numeroImoveis;
+            var novosDados = new Senhorio(id, nif, nome, contacto, numeroImoveis, localidade);
 
+            dadosSenhorios.Alterar(id, novosDados);
             return true;
         }
 
@@ -84,21 +81,8 @@ namespace regras
                 throw new SenhorioNaoEncontrado(id);
             }
 
-            return dadosSenhorios.Remover(id);
-        }
-
-        /**
-         * @brief Obtém um senhorio pelo Id.
-         */
-        public Senhorio ObterPorId(int id)
-        {
-            var senhorio = dadosSenhorios.ObterPorId(id);
-            if (senhorio == null)
-            {
-                throw new SenhorioNaoEncontrado(id);
-            }
-
-            return senhorio;
+            dadosSenhorios.Remover(id);
+            return true;
         }
 
         /**

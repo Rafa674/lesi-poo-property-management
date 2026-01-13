@@ -17,9 +17,9 @@ namespace regras
         /**
          * @brief Construtor com repositório de imóveis.
          */
-        public GestaoImovel(RepositorioImovel dadosImoveis)
+        public GestaoImovel(RepositorioImovel repositorio)
         {
-            this.dadosImoveis = dadosImoveis;
+            dadosImoveis = repositorio;
         }
 
         /**
@@ -44,14 +44,12 @@ namespace regras
 
             var imovel = new Imovel(id, tipo, area, rendaMensal, estado, localidade, descricao, senhorio);
 
-            // Guardar no repositório
             dadosImoveis.Adicionar(imovel);
 
-            // Manter relação (se estiveres a guardar imóveis dentro do senhorio)
-            if (senhorio.Imoveis != null)
-            {
-                senhorio.Imoveis.Add(imovel);
-            }
+            if (senhorio.Imoveis == null)
+                senhorio.Imoveis = new List<Imovel>();
+
+            senhorio.Imoveis.Add(imovel);
 
             return true;
         }
@@ -61,8 +59,8 @@ namespace regras
          */
         public bool Alterar(int id, int tipo, double area, double rendaMensal, int estado, Localidade localidade, string descricao, Senhorio senhorio)
         {
-            var imovel = dadosImoveis.ObterPorId(id);
-            if (imovel == null)
+            var existente = dadosImoveis.ObterPorId(id);
+            if (existente == null)
             {
                 throw new ImovelNaoEncontrado(id);
             }
@@ -82,14 +80,9 @@ namespace regras
                 throw new OperacaoInvalida("Senhorio do imóvel é obrigatório.");
             }
 
-            imovel.Tipo = tipo;
-            imovel.Area = area;
-            imovel.RendaMensal = rendaMensal;
-            imovel.Estado = estado;
-            imovel.Localidade = localidade;
-            imovel.Descricao = descricao;
-            imovel.Senhorio = senhorio;
+            var novosDados = new Imovel(id, tipo, area, rendaMensal, estado, localidade, descricao, senhorio);
 
+            dadosImoveis.Alterar(id, novosDados);
             return true;
         }
 
@@ -104,27 +97,13 @@ namespace regras
                 throw new ImovelNaoEncontrado(id);
             }
 
-            // Manter relação (remover da lista do senhorio, se existir)
             if (existente.Senhorio != null && existente.Senhorio.Imoveis != null)
             {
                 existente.Senhorio.Imoveis.Remove(existente);
             }
 
-            return dadosImoveis.Remover(id);
-        }
-
-        /**
-         * @brief Obtém um imóvel pelo Id.
-         */
-        public Imovel ObterPorId(int id)
-        {
-            var imovel = dadosImoveis.ObterPorId(id);
-            if (imovel == null)
-            {
-                throw new ImovelNaoEncontrado(id);
-            }
-
-            return imovel;
+            dadosImoveis.Remover(id);
+            return true;
         }
 
         /**

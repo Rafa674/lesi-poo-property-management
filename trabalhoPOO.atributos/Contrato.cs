@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Linq;
 namespace Atributos
 {
     /**
@@ -127,7 +128,7 @@ namespace Atributos
         /**
          * @brief Comparação natural por ID.
          */
-        public int CompareTo(Contrato? other)
+        public int CompareTo(Contrato other)
         {
             if (other is null) return 1;
             return Id.CompareTo(other.Id);

@@ -19,7 +19,7 @@ namespace Dados
          * @brief Adiciona um senhorio ao repositório.
         */
 
-        public bool Adicionar(Senhorio senhorio)
+        public bool Adicionar(Senhorio senhorio) 
         {
             if (senhorio == null)
                 return false;
@@ -64,9 +64,16 @@ namespace Dados
          * @brief Obtém um senhorio pelo seu Id.
         */
 
-        public Senhorio? ObterPorId(int id)
+        public Senhorio ObterPorId(int id)
         {
-            return senhorios.FirstOrDefault(s => s.Id == id);
+            foreach (Senhorio s in senhorios)
+            {
+                if (s.Id == id)
+                { 
+                   return s;  
+                }
+            }
+            return null;
         }
 
         /**
@@ -107,7 +114,6 @@ namespace Dados
                 senhorios = (List<Senhorio>)bf.Deserialize(fs);
 #pragma warning restore SYSLIB0011
 
-                // Listas dos filhos são [NonSerialized], portanto vêm a null após carregar.
                 foreach (var s in senhorios)
                 {
                     if (s.Imoveis == null)

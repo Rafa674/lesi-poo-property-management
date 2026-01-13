@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Atributos;
 using Dados;
 using Excecoes;
@@ -18,9 +17,25 @@ namespace regras
         /**
          * @brief Construtor com repositório de contratos.
          */
-        public GestaoRecibo(RepositorioContrato dadosContratos)
+        public GestaoRecibo(RepositorioContrato repositorio)
         {
-            this.dadosContratos = dadosContratos;
+            dadosContratos = repositorio;
+        }
+
+        /**
+         * @brief Obtém um recibo pelo Id (dentro do contrato).
+         */
+        public static Recibo ObterReciboPorId(Contrato contrato, int idRecibo)
+        {
+            foreach (Recibo r in contrato.Recibos)
+            {
+                if (r.Id == idRecibo)
+                {
+                    return r;
+                }
+            }
+
+            return null;
         }
 
         /**
@@ -67,7 +82,7 @@ namespace regras
                 contrato.Recibos = new List<Recibo>();
             }
 
-            var recibo = contrato.Recibos.FirstOrDefault(r => r.Id == idRecibo);
+            var recibo = ObterReciboPorId(contrato, idRecibo);
             if (recibo == null)
             {
                 throw new ReciboNaoEncontrado(idRecibo);
@@ -102,7 +117,7 @@ namespace regras
                 contrato.Recibos = new List<Recibo>();
             }
 
-            var recibo = contrato.Recibos.FirstOrDefault(r => r.Id == idRecibo);
+            var recibo = ObterReciboPorId(contrato, idRecibo);
             if (recibo == null)
             {
                 throw new ReciboNaoEncontrado(idRecibo);
@@ -110,31 +125,6 @@ namespace regras
 
             contrato.Recibos.Remove(recibo);
             return true;
-        }
-
-        /**
-         * @brief Obtém um recibo pelo Id (dentro do contrato).
-         */
-        public Recibo ObterPorId(int idContrato, int idRecibo)
-        {
-            var contrato = dadosContratos.ObterPorId(idContrato);
-            if (contrato == null)
-            {
-                throw new ContratoNaoEncontrado(idContrato);
-            }
-
-            if (contrato.Recibos == null)
-            {
-                contrato.Recibos = new List<Recibo>();
-            }
-
-            var recibo = contrato.Recibos.FirstOrDefault(r => r.Id == idRecibo);
-            if (recibo == null)
-            {
-                throw new ReciboNaoEncontrado(idRecibo);
-            }
-
-            return recibo;
         }
 
         /**

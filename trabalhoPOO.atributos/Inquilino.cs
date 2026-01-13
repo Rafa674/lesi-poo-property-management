@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Atributos
 {
@@ -38,7 +40,9 @@ namespace Atributos
         /**
          * @brief Construtor por omissão.
          */
-        public Inquilino() : base() { }
+        public Inquilino() : base() { 
+        
+        }
 
         /**
          * @brief Construtor completo.
@@ -53,7 +57,7 @@ namespace Atributos
         /**
          * @brief Comparação natural por ID.
          */
-        public int CompareTo(Inquilino? other)
+        public int CompareTo(Inquilino other)
         {
             if (other is null) return 1;
             return Id.CompareTo(other.Id);

@@ -23,7 +23,7 @@ namespace Dados
         {
             if (inquilino == null)
                 return false;
-
+            
             inquilinos.Add(inquilino);
             return true;
         }
@@ -65,10 +65,19 @@ namespace Dados
          * @brief Obtém um inquilino pelo seu Id.
         */
 
-        public Inquilino? ObterPorId(int id)
+        public Inquilino ObterPorId(int id)
         {
-            return inquilinos.FirstOrDefault(i => i.Id == id);
-        }
+            foreach (Inquilino i in inquilinos)
+            {
+                if (i.Id == id)
+                {
+                    return i;
+                }
+
+            } 
+            return null;
+        }   
+        
 
         /**
          * @brief Guarda a lista de inquilinos em formato binário.

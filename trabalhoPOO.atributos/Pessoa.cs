@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Atributos
 {
@@ -10,7 +12,7 @@ namespace Atributos
      * Contém propriedades comuns: identificador (ID), NIF, nome, contacto telefónico e localidade.
      */
     [Serializable]
-    public abstract class Pessoa : IComparable<Pessoa>
+    public abstract class Pessoa : IComparable<Pessoa> 
     {
         #region Atributos
         private int id;
@@ -85,7 +87,7 @@ namespace Atributos
         /**
          * @brief Comparação natural por Id para permitir ordenação.
          */
-        public int CompareTo(Pessoa? other)
+        public int CompareTo(Pessoa other)
         {
             if (other is null) return 1;
             return Id.CompareTo(other.Id);

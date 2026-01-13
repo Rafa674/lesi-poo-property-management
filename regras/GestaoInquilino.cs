@@ -17,9 +17,9 @@ namespace regras
         /**
          * @brief Construtor com repositório de inquilinos.
          */
-        public GestaoInquilino(RepositorioInquilino dadosInquilinos)
+        public GestaoInquilino(RepositorioInquilino repositorio)
         {
-            this.dadosInquilinos = dadosInquilinos;
+            dadosInquilinos = repositorio;
         }
 
         /**
@@ -53,8 +53,8 @@ namespace regras
          */
         public bool Alterar(int id, int nif, string nome, int contacto, string profissao, double rendimentoMensal, Localidade localidade)
         {
-            var inquilinoExistente = dadosInquilinos.ObterPorId(id);
-            if (inquilinoExistente == null)
+            var existente = dadosInquilinos.ObterPorId(id);
+            if (existente == null)
             {
                 throw new InquilinoNaoEncontrado(id);
             }
@@ -74,13 +74,9 @@ namespace regras
                 throw new OperacaoInvalida("Rendimento mensal não pode ser negativo.");
             }
 
-            inquilinoExistente.Nome = nome;
-            inquilinoExistente.Nif = nif;
-            inquilinoExistente.Contacto = contacto;
-            inquilinoExistente.Profissao = profissao;
-            inquilinoExistente.RendimentoMensal = rendimentoMensal;
-            inquilinoExistente.Localidade = localidade;
+            var novosDados = new Inquilino(id, nif, nome, contacto, profissao, rendimentoMensal, localidade);
 
+            dadosInquilinos.Alterar(id, novosDados);
             return true;
         }
 
@@ -95,21 +91,8 @@ namespace regras
                 throw new InquilinoNaoEncontrado(id);
             }
 
-            return dadosInquilinos.Remover(id);
-        }
-
-        /**
-         * @brief Obtém um inquilino pelo Id.
-         */
-        public Inquilino ObterPorId(int id)
-        {
-            var inquilino = dadosInquilinos.ObterPorId(id);
-            if (inquilino == null)
-            {
-                throw new InquilinoNaoEncontrado(id);
-            }
-
-            return inquilino;
+            dadosInquilinos.Remover(id);
+            return true;
         }
 
         /**

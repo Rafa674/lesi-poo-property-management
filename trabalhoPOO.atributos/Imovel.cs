@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Atributos
 {
@@ -25,7 +27,6 @@ namespace Atributos
         private string descricao;
         [NonSerialized]
         private Senhorio senhorio;
-        [NonSerialized]
         private List<Despesa> despesas;
         
         #endregion
@@ -139,7 +140,7 @@ namespace Atributos
         /**
          * @brief Comparação natural por ID.
          */
-        public int CompareTo(Imovel? other)
+        public int CompareTo(Imovel other)
         {
             if (other is null) return 1;
             return Id.CompareTo(other.Id);

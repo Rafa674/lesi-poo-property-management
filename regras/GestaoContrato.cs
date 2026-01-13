@@ -17,9 +17,9 @@ namespace regras
         /**
          * @brief Construtor com repositório de contratos.
          */
-        public GestaoContrato(RepositorioContrato dadosContratos)
+        public GestaoContrato(RepositorioContrato repositorio)
         {
-            this.dadosContratos = dadosContratos;
+            dadosContratos = repositorio;
         }
 
         /**
@@ -53,8 +53,8 @@ namespace regras
          */
         public bool Alterar(int id, DateTime dataInicio, DateTime dataFim, int estado, Inquilino inquilino, Imovel imovel, Senhorio senhorio)
         {
-            var contrato = dadosContratos.ObterPorId(id);
-            if (contrato == null)
+            var existente = dadosContratos.ObterPorId(id);
+            if (existente == null)
             {
                 throw new ContratoNaoEncontrado(id);
             }
@@ -74,13 +74,9 @@ namespace regras
                 throw new OperacaoInvalida("Inquilino inválido.");
             }
 
-            contrato.DataInicio = dataInicio;
-            contrato.DataFim = dataFim;
-            contrato.Estado = estado;
-            contrato.Senhorio = senhorio;
-            contrato.Inquilino = inquilino;
-            contrato.Imovel = imovel;
+            var novosDados = new Contrato(id, senhorio, inquilino, imovel, dataInicio, dataFim, estado);
 
+            dadosContratos.Alterar(id, novosDados);
             return true;
         }
 
@@ -95,21 +91,8 @@ namespace regras
                 throw new ContratoNaoEncontrado(id);
             }
 
-            return dadosContratos.Remover(id);
-        }
-
-        /**
-         * @brief Obtém um contrato pelo Id.
-         */
-        public Contrato ObterPorId(int id)
-        {
-            var contrato = dadosContratos.ObterPorId(id);
-            if (contrato == null)
-            {
-                throw new ContratoNaoEncontrado(id);
-            }
-
-            return contrato;
+            dadosContratos.Remover(id);
+            return true;
         }
 
         /**

@@ -67,10 +67,19 @@ namespace Dados
          * @brief Obtém um imóvel pelo seu Id.
         */
 
-        public Imovel? ObterPorId(int id)
+        public Imovel ObterPorId(int id)
         {
-            return imoveis.FirstOrDefault(i => i.Id == id);
+            foreach (Imovel s in imoveis)
+            {
+                if (s.Id == id)
+                {
+                    return s;
+                }
+            }
+
+            return null;
         }
+
 
         /**
          * @brief Guarda a lista de imóveis em ficheiro binário.
@@ -110,7 +119,7 @@ namespace Dados
                 imoveis = (List<Imovel>)bf.Deserialize(fs);
 #pragma warning restore SYSLIB0011
 
-                // Listas dos filhos são [NonSerialized], portanto vêm a null após carregar.
+                
                 foreach (var i in imoveis)
                 {
                     if (i.Despesas == null)

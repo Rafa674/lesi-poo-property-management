@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Atributos
 {
@@ -135,7 +137,7 @@ namespace Atributos
         /**
          * @brief Comparação natural por ID.
          */
-        public int CompareTo(Recibo? other)
+        public int CompareTo(Recibo other)
         {
             if (other is null) return 1;
             return Id.CompareTo(other.Id);

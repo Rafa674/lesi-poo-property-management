@@ -64,9 +64,17 @@ namespace Dados
         /**
          * @brief Obtém um contrato pelo seu Id.
         */
-        public Contrato? ObterPorId(int id)
+        public Contrato ObterPorId(int id)
         {
-            return contratos.FirstOrDefault(c => c.Id == id);
+            foreach (Contrato c in contratos)
+            {
+                if (c.Id == id) 
+                {  
+                     return c; 
+                }
+                    
+            }
+            return null;
         }
 
         /**
