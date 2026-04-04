@@ -13,13 +13,17 @@ namespace Dados
      */
     public class RepositorioSenhorio
     {
-        private List<Senhorio> senhorios = new();
+        private List<Senhorio> senhorios;
+
+        public RepositorioSenhorio()
+        {
+            senhorios = new List<Senhorio>();
+        }
 
         /**
          * @brief Adiciona um senhorio ao repositório.
         */
-
-        public bool Adicionar(Senhorio senhorio) 
+        public bool Adicionar(Senhorio senhorio)
         {
             if (senhorio == null)
                 return false;
@@ -31,7 +35,6 @@ namespace Dados
         /**
          * @brief Atualiza os dados de um senhorio existente.
         */
-
         public bool Alterar(int id, Senhorio novosDados)
         {
             var senhorio = ObterPorId(id);
@@ -63,14 +66,13 @@ namespace Dados
         /**
          * @brief Obtém um senhorio pelo seu Id.
         */
-
         public Senhorio ObterPorId(int id)
         {
             foreach (Senhorio s in senhorios)
             {
                 if (s.Id == id)
-                { 
-                   return s;  
+                {
+                    return s;
                 }
             }
             return null;
@@ -79,7 +81,6 @@ namespace Dados
         /**
          * @brief Guarda os dados dos senhorios em ficheiro binário.
         */
-
         public bool GuardarEmBinario(string ficheiro)
         {
             try
@@ -100,7 +101,6 @@ namespace Dados
         /**
          * @brief Carrega os dados dos senhorios de um ficheiro binário.
         */
-
         public bool CarregarDeBinario(string ficheiro)
         {
             try
@@ -114,7 +114,7 @@ namespace Dados
                 senhorios = (List<Senhorio>)bf.Deserialize(fs);
 #pragma warning restore SYSLIB0011
 
-                foreach (var s in senhorios)
+                foreach (var s in senhorios)        
                 {
                     if (s.Imoveis == null)
                         s.Imoveis = new List<Imovel>();
@@ -133,7 +133,7 @@ namespace Dados
         */
         public List<Senhorio> Listar()
         {
-            return senhorios;
+            return new List<Senhorio>(senhorios);
         }
     }
 }

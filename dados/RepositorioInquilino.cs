@@ -13,7 +13,12 @@ namespace Dados
      */
     public class RepositorioInquilino
     {
-        private List<Inquilino> inquilinos = new();
+        private List<Inquilino> inquilinos;
+
+        public RepositorioInquilino()
+        {
+            inquilinos = new List<Inquilino>();
+        }
 
         /**
          * @brief Adiciona um inquilino ao repositório.

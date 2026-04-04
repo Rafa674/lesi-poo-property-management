@@ -13,7 +13,12 @@ namespace Dados
      */
     public class RepositorioContrato
     {
-        private List<Contrato> contratos = new();
+        private List<Contrato> contratos;
+
+        public RepositorioContrato()
+        {
+            contratos = new List<Contrato>();
+        }
 
         /**
          *  @brief Adiciona um contrato ao repositório.

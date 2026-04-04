@@ -13,7 +13,12 @@ namespace Dados
      */
     public class RepositorioImovel
     {
-        private List<Imovel> imoveis = new();
+        private List<Imovel> imoveis;
+
+        public RepositorioImovel()
+        {
+            imoveis = new List<Imovel>();
+        }
 
         /**
          * @brief Adiciona um imóvel ao repositório.
